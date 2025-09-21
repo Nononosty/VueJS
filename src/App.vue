@@ -3,7 +3,7 @@
     <nav>
       <div v-if="isAuthenticated && user">
         Welcome, {{ user.name }}
-        <button @click="logout">Logout</button>
+        <button @click="logout">Выйти</button>
       </div>
 
       <div v-else>
