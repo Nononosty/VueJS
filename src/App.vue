@@ -18,7 +18,7 @@
             <input v-model="password" type="password" id="password" required />
           </div>
 
-          <button type="submit">Login</button>
+          <button type="submit">Войти</button>
           <p v-if="authError" class="error">{{ authError }}</p>
         </form>
       </div>
