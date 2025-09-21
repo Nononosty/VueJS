@@ -7,7 +7,7 @@
             <span class="welcome-text">Welcome, </span>
             <span class="user-name">{{ user.name }}</span>
           </div>
-          <button @click="logout" class="logout-btn">Logout</button>
+          <button @click="logout" class="logout-btn">Выйти</button>
         </div>
       </div>
 
