@@ -115,4 +115,7 @@ th {
 tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+h2 {
+  font-weight: bold;
+}
 </style>
