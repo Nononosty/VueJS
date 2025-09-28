@@ -1,96 +1,67 @@
 <template>
   <div>
     <h2>Список экземпляров книг</h2>
-    <div v-if="loading">Загрузка...</div>
-    <div v-else-if="error">Ошибка загрузки: {{ error }}</div>
-    <div v-else-if="copies.length === 0">Экземпляры книг не найдены</div>
-    <div v-else>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>ID издания</th>
-            <th>Коэффициент износа</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="copy in copies" :key="copy.id">
-            <td>{{ copy.id }}</td>
-            <td>{{ copy.edition_id }}</td>
-            <td>{{ copy.wear_coefficient }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <DataTable
+      :value="copies"
+      :lazy="true"
+      :loading="dataStore.loading"
+      :paginator="true"
+      :rows="perpage"
+      :rowsPerPageOptions="[2, 5, 10]"
+      :totalRecords="copies_total"
+      @page="onPageChange"
+      responsiveLayout="scroll"
+      :first="offset"
+    >
+      <Column field="id" header="ID" />
+      <Column field="edition_id" header="ID издания" />
+      <Column field="wear_coefficient" header="Коэффициент износа" />
+    </DataTable>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import { useAuthStore } from '@/stores/authStore'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import { useDataStore } from '@/stores/dataStore'
 
 export default {
-  name: 'CopiesBook',
+  name: 'Copy',
+  components: { DataTable, Column },
   data() {
     return {
-      copies: [],
-      loading: true,
-      error: null,
+      dataStore: useDataStore(),
+      perpage: 5,
+      offset: 0,
     }
   },
+  computed: {
+    copies() {
+      return this.dataStore.copy
+    },
+    copies_total() {
+      return this.dataStore.copy_total
+    },
+  },
   mounted() {
-    this.fetchCopies()
+    console.log('CopyBook component MOUNTED!')
+    this.dataStore.get_copy()
+    this.dataStore.get_copy_total()
+    console.log('Copies-', this.copies)
   },
   methods: {
-    async fetchCopies() {
-      try {
-        this.loading = true
-        this.error = null
-
-        const authStore = useAuthStore()
-        const token = authStore.token
-
-        const response = await axios.get('http://127.0.0.1:8000/api/copy', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-
-        this.copies = response.data
-      } catch (error) {
-        console.error('Ошибка загрузки экземпляров:', error)
-        this.error = 'Не удалось загрузить список экземпляров'
-      } finally {
-        this.loading = false
-      }
+    onPageChange(event) {
+      this.offset = event.first
+      this.perpage = event.rows
+      this.dataStore.get_copy(this.offset / this.perpage, this.perpage)
     },
   },
 }
 </script>
 
 <style scoped>
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  background-color: #f5f5f5;
-  font-weight: bold;
-}
-
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
 h2 {
   font-weight: bold;
+  margin-bottom: 20px;
 }
 </style>
