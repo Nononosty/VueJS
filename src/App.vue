@@ -58,8 +58,10 @@ import Button from 'primevue/button'
 import Menubar from 'primevue/menubar'
 import InputText from 'primevue/inputtext'
 
+import Toast from 'primevue/toast'
+
 export default {
-  components: { Button, Menubar, InputText },
+  components: { Button, Menubar, InputText, Toast },
   data() {
     return {
       email: '',

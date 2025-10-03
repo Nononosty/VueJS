@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Lendings from '@/components/LendingBook.vue'
 import Copies from '@/components/CopiesBook.vue'
 import Editions from '@/components/EditionsBook.vue'
+import CreateEdition from '@/components/CreateEdition.vue'
 
 const routes = [
   {
@@ -15,6 +16,11 @@ const routes = [
   {
     path: '/copies',
     component: Copies,
+  },
+
+  {
+    path: '/createEdition',
+    component: CreateEdition,
   },
 ]
 

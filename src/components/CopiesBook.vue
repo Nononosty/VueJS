@@ -14,7 +14,11 @@
       :first="offset"
     >
       <Column field="id" header="ID" />
-      <Column field="edition_id" header="ID издания" />
+      <Column header="Наименование издания">
+        <template #body="slotProps">
+          {{ slotProps.data.edition?.name }}
+        </template>
+      </Column>
       <Column field="wear_coefficient" header="Коэффициент износа" />
     </DataTable>
   </div>

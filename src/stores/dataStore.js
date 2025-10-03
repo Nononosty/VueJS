@@ -12,6 +12,7 @@ export const useDataStore = defineStore('data', {
     copy_total: null,
 
     items: [], //////////
+    errorCode: null, // Добавляем errorCode
     errorMessage: '',
   }),
   actions: {
@@ -103,6 +104,39 @@ export const useDataStore = defineStore('data', {
           this.errorMessage = error.message
           console.log(error)
         } else {
+          console.log(error)
+        }
+      }
+    },
+
+    async create_edition(formData) {
+      this.errorMessage = ''
+      try {
+        const response = await axios.post(backendUrl + '/edition', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
+        })
+        this.errorCode = response.data.code
+        this.errorMessage = response.data.message
+
+        // Если создание успешно, обновляем список изданий
+        if (this.errorCode === 0) {
+          this.get_edition() // Обновляем список
+        }
+      } catch (error) {
+        if (error.response) {
+          this.errorCode = 11
+          this.errorMessage = error.response.data.message
+          console.log(error)
+        } else if (error.request) {
+          this.errorCode = 12
+          this.errorMessage = error.message
+          console.log(error)
+        } else {
+          this.errorCode = 13
+          this.errorMessage = 'Неизвестная ошибка'
           console.log(error)
         }
       }

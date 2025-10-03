@@ -16,6 +16,27 @@
       <Column field="id" header="ID" />
       <Column field="name" header="Наименование издания" />
       <Column field="author" header="Автор" />
+      <Column header="Обложка">
+        <template #body="slotProps">
+          <img
+            v-if="slotProps.data.picture_url"
+            :src="slotProps.data.picture_url"
+            :alt="slotProps.data.name"
+            class="book-cover"
+          />
+          <span v-else class="no-image">Нет изображения</span>
+        </template>
+      </Column>
+      <template #footer>
+        <div class="text-end">
+          <Button
+            type="button"
+            @click="$router.push('/createEdition')"
+            icon="pi pi-plus"
+            label="Добавить издание"
+          ></Button>
+        </div>
+      </template>
     </DataTable>
   </div>
 </template>
@@ -24,10 +45,10 @@
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { useDataStore } from '@/stores/dataStore'
-
+import Button from 'primevue/button'
 export default {
   name: 'Editions',
-  components: { DataTable, Column },
+  components: { DataTable, Column, Button },
   data() {
     return {
       dataStore: useDataStore(),
@@ -63,5 +84,17 @@ export default {
 h2 {
   font-weight: bold;
   margin-bottom: 20px;
+}
+.book-cover {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-image {
+  color: #999;
+  font-style: italic;
 }
 </style>

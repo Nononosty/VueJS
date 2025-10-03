@@ -12,6 +12,8 @@ import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 import './style.css'
 
+import ToastService from 'primevue/toastservice'
+
 const app = createApp(App)
 
 app.use(createPinia())
@@ -27,5 +29,5 @@ app.use(PrimeVue, {
     },
   },
 })
-
+app.use(ToastService)
 app.mount('#app')
