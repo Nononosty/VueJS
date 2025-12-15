@@ -75,7 +75,7 @@ export default {
         const authStore = useAuthStore()
         const token = authStore.token
 
-        const response = await axios.get('https://www.libcore.ru:8000/api/lending', {
+        const response = await axios.get('http://www.libcore.ru:8001/api/lending', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
